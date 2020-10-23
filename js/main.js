@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 // Callback függvény fade után.
 function fadeDone() {
@@ -7,31 +7,36 @@ function fadeDone() {
 
 // Eseménykezelő beállítása.
 $("p").click(function () {
-  // $(this).hide();
-  // $(this).fadeTo(5000, 1, fadeDone);
-   $(this).slideDown(3500).css("color", "blue");
+   $(this).hide();
+   //$(this).fadeIn(5000);
+   //$(this).fadeTo(5000, 1, fadeDone);
+   //$(this).slideDown(5000).sliedUp(2000);
+ //  $(this).slideDown(3500).css("color", "blue");
 });
 
-// Esemény kiváltása.
+// Esemény kiváltása. Fired / Fires
 $("p").click();
 
-// Kattintás megelőzése.
+
+// Kattintás megelőzése: preventDefault
 $("nav a.nav-link").click(function (ev) {
   ev.preventDefault();
   startPageChange(this, 1, false);
 });
+
 function startPageChange(elem, num, bool) {
   var link = $(elem);
   var prop = link.data("prop") || "opacity";
   var val = link.data("value") || "0";
   var speed = link.data("speed") || 1000;
-  var settings = {};
+  var settings = {};//objektum letrehozasa
   settings[prop] = val;
 
   $(document.body).animate(settings, speed, function () {
     document.location = link.attr("href");
   });
 }
+
 
 // Event oldal.
 $(".events-search-row input").on("keyup", function (ev) {
@@ -118,3 +123,4 @@ $.fn.sendForm = function() {
 };
 
 $("#newEventForm").sendForm();
+*/

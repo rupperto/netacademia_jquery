@@ -11,11 +11,11 @@ $("p").click(function () {
    //$(this).fadeIn(5000);
    //$(this).fadeTo(5000, 1, fadeDone);
    //$(this).slideDown(5000).sliedUp(2000);
- //  $(this).slideDown(3500).css("color", "blue");
+   $(this).slideDown(3500).css("color", "blue");
 });
 
 // Esemény kiváltása. Fired / Fires
-$("p").click();
+//$("p").click();
 
 
 // Kattintás megelőzése: preventDefault
@@ -69,10 +69,146 @@ function showInvalidMessage() {
     .text("Sikertelen belépés!");
 }
 
+
+
+
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
 });
+//jegyek tombje
 
+var tickets = [
+    {
+        event : "Sziget fesztivál",
+        time : "2020-05-15 18:00" ,
+        seller: "Kiss Mártom",
+        pcs :6,
+        link: "licit/1"
+   },
+    {
+        event : "Cím 2",
+        time : "2019-10-15 18:00" ,
+        seller: "Nagy Márti",
+        pcs :6,
+        link: "licit/5"
+   },
+    {
+        event : "Macskák",
+        time : "2020-05-15 18:00" ,
+        seller: "Kiss Mártom",
+        pcs :40,
+        link: "licit/1"
+   },
+    {
+        event : "Volt fesztivál",
+        time : "2020-10-15 18:00" ,
+        seller: "Rupperto",
+        pcs :15,
+        link: "licit/1"
+   },
+    {
+        event : "Balaton fesztivál",
+        time : "2020-07-15 18:00" ,
+        seller: "Varga Ferenc",
+        pcs :106,
+        link: "licit/3"
+   },
+];
+
+//jegyek tablajanak generalasa
+var ticketTable = $("table.table.table-striped").eq(0);
+function fillTicketsTable(currentTickets)
+{
+    currentTickets= currentTickets || tickets;
+    var tbody = ticketTable.find("tbody");
+    tbody.html("");
+    $.each (currentTickets, function (index, ticket) {
+        var row = $(".template .ticket-row").clone();
+        row.find("td").eq(0).html(index+1);
+        row.find("td").eq(1).html(ticket.event);
+        row.find("td").eq(2).html(ticket.time);
+        row.find("td").eq(3).html(ticket.seller);
+        row.find("td").eq(4).html(ticket.pcs);
+        row.find("td").eq(5).html(ticket.link);
+        tbody.append(row);
+    })
+
+}
+fillTicketsTable();
+
+$(".tickets-search-row input").on("keyup", filterTickets); 
+function filterTickets()
+{
+ //console.log($(this).val());
+    var currentValue = $(this).val().toLowerCase();
+    var filteredTickets = []; 
+    if (currentValue == ""){
+        filteredTickets = tickets;
+    }
+    else  {
+        filteredTickets = tickets.filter(function(item){
+            var done = false;
+            for(var k in item){
+                if (item[k].toString().toLowerCase().indexOf(currentValue) > -1){
+                    done = true;
+                }
+            }
+            return done;
+        });
+
+    }
+    fillTicketsTable(filteredTickets);
+}
+
+//jegyek tablazat rendezese
+ticketTable.find("thead th[data-key]").on("click", orderTicketTable);
+function orderTicketTable(){
+    /*
+    ticketTable.find("thead th [data-key]")
+    .removeClass("asc")
+    .removeClass("desc");*/
+
+
+
+    var th =$(this);
+    $.each(ticketTable.find('thead th[data-key]'), function (index, elem) {
+        var currentTh = $(elem);
+        if (th.data("key")!=currentTh.data("key")){
+            currentTh.removeClass('asc').removeClass('desc');
+        }
+
+    }
+    
+    )
+    var key = th.data("key");
+    var sortedTickets = tickets.map(function(item){
+        return item;
+        });
+
+    if (th.hasClass("asc")) {
+        th.removeClass("asc").addClass("desc");
+    } else
+    {
+        th.removeClass("desc").addClass("asc");
+    }  
+
+    sortedTickets.sort(function(a, b){
+
+        if (th.hasClass("asc")) {
+            return a[key].toString().localeCompare(b[key].toString() ) ;
+        } else
+        {
+            return b[key].toString().localeCompare(a[key].toString() ) ;
+        }  
+        
+    });
+    fillTicketsTable(sortedTickets);
+
+    }
+
+
+
+/*
 
 // jQuery plugin for send form data.
 $.fn.sendForm = function() {

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>JegyBazár</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="../css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="masthead">
+      <h3 class="text-muted">JegyBazár</h3>
+      
+      <form id="new-ticket-form" novalidate>
+        <div class="form-group">
+          <label for="event-name">Esemény neve:</label>
+          <input type="text" class="form-control" id="event-name" placeholder="Esemeny neve" required name="event">
+        </div>
+        <div class="form-group">
+            <label for="seller-name">Eladó neve:</label>
+            <input type="text" class="form-control" id="seller-name" placeholder="Eladó neve" required name="seller"> 
+          </div>
+          <div class="form-group">
+            <label for="time">Időpont:</label>
+            <input type="datetime-local" class="form-control" id="time" placeholder="Időpont" required name="time">
+          </div>
+          <div class="form-group">
+            <label for="pcs">Jegyek száma:</label>
+            <input type="number" class="form-control" id="pcs" placeholder="Jegyek száma" required name=pcs>
+          </div>
+
+
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      
+    </div>
+
+
+
+</div>
+
+  <div class="container footer-container">
+    <!-- Site footer -->
+    <footer class="footer">
+      <p>&copy; Company 2017</p>
+    </footer>
+  </div>
+
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+  <script src="../lib/popper.min.js"></script>
+  <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../js/main.js"></script>
+
+  <script type="text/javascript">
+
+      var RESTURL = "http://localhost:3000";
+
+      $(document).ready(function(){
+
+            $("new-ticket-form").submit(
+                function(event) {
+                    //bongeszo default submit esemeny megallitasa
+                    event.preventDefault(); //submit click megallitasa esemeny megallitsa
+
+                    var newTicketFormElem = $(this); //jquery form elem
+                    var newTicketFormNativElem = newTicketFormElem[0];//bongeszo native form elem, mindi a 0. al kezd
+
+                    if (newTicketFormNativElem.checkValidity() == true){
+                        var serializiedArray = newTicketFormNativElem.serializiedArray();
+                        var data = {} // ures objectum letrehozasa
+                        $(serializiedArray).each(
+                            function(index, elem){
+                                data[elem['name'] = elem['value']]
+
+
+
+                        });
+
+                        $.ajax({
+                            type :"POST",
+                            url : RESTURL + '/tickets',
+                            "data" : data,
+                            dataType : "json"
+
+                        });
+
+
+                    }
+                    if (newTicketFormNativElem.hasClass("was-validated")==false){
+                        newTicketFormNativElem.addClass("was-validated");
+                    }
+                    
+
+                });
+        });
+  </script>
+
+</body>
+
+</html>

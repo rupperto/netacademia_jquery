@@ -74,37 +74,35 @@
 
       $(document).ready(function(){
 
-            $("new-ticket-form").submit(
+            $("#new-ticket-form").submit(
                 function(event) {
                     //bongeszo default submit esemeny megallitasa
                     event.preventDefault(); //submit click megallitasa esemeny megallitsa
 
                     var newTicketFormElem = $(this); //jquery form elem
-                    var newTicketFormNativElem = newTicketFormElem[0];//bongeszo native form elem, mindi a 0. al kezd
+                    var newTicketFormNativElem = newTicketFormElem[0];//bongeszo native form elem, mindi a 0. val kezd
 
                     if (newTicketFormNativElem.checkValidity() == true){
-                        var serializiedArray = newTicketFormNativElem.serializiedArray();
+                        var serializedArray = newTicketFormElem.serializeArray();
+                        //console.log(serializedArray);
+
                         var data = {} // ures objectum letrehozasa
-                        $(serializiedArray).each(
+                        $(serializedArray).each(
                             function(index, elem){
-                                data[elem['name'] = elem['value']]
-
-
-
+                                data[elem['name']] = elem['value'];
                         });
 
                         $.ajax({
-                            type :"POST",
-                            url : RESTURL + '/tickets',
-                            "data" : data,
-                            dataType : "json"
-
-                        });
+                            type: "POST",
+                            url: RESTURL + "/tickets",
+                            "data": data,
+                            dataType: 'json'
+                        })
 
 
                     }
-                    if (newTicketFormNativElem.hasClass("was-validated")==false){
-                        newTicketFormNativElem.addClass("was-validated");
+                    if (newTicketFormElem.hasClass("was-validated")==false){
+                        newTicketFormElem.addClass("was-validated");
                     }
                     
 
